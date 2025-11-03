@@ -349,7 +349,7 @@
         }
     }
 
-    function endTest() {
+    async function endTest() {
         testActive = false;
         startBtn.hidden = false;
         retryBtn.hidden = false;
@@ -384,15 +384,15 @@
             populateResultsTable(rightResult, leftResult);
         }
         
-        const history = JSON.parse(localStorage.getItem('visionHistory') || '[]');
-        history.push({ 
-            when: new Date().toISOString(), 
+        const payload = {
+            when: new Date().toISOString(),
             rightEye: rightResult.acuity,
             leftEye: leftResult.acuity,
             rightLogmar: rightResult.logmar,
             leftLogmar: leftResult.logmar
-        });
-        localStorage.setItem('visionHistory', JSON.stringify(history));
+        };
+        // Save to Firebase (if configured) with local fallback
+        try { await window.VisionDB?.saveVisionResult(payload); } catch (_) {}
     }
     
     function populateResultsTable(rightResult, leftResult) {
@@ -456,22 +456,17 @@
             if (!testActive) return;
             const answer = btn.getAttribute('data-dir');
             if (answer === direction) {
-                // Correct answer
-                correctStreak += 1;
-                wrongStreak = 0; // Reset wrong streak
+                // Correct answer (advance immediately on one correct)
+                correctStreak = 0; // not used for gating anymore
+                wrongStreak = 0;
                 smallestCorrectSize = sizeStepIndex;
-                
-                // Need 3 correct answers in a row to move to next size
-                if (correctStreak >= 3) {
-                    correctStreak = 0;
-                    if (sizeStepIndex < steps.length - 1) {
-                        sizeStepIndex += 1;
-                        setSize();
-                    } else {
-                        // Reached the smallest size, end current eye test
-                        endEyeTest();
-                        return;
-                    }
+                if (sizeStepIndex < steps.length - 1) {
+                    sizeStepIndex += 1;
+                    setSize();
+                } else {
+                    // Reached the smallest size, end current eye test
+                    endEyeTest();
+                    return;
                 }
             } else {
                 // Incorrect answer - track wrong streak
