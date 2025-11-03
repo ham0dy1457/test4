@@ -1,14 +1,19 @@
 /* Base styles - Eye-friendly color scheme */
 :root {
-    --bg: #EAF6FF; /* Very Light Sky Blue - Main background */
-    --bg-elev: #D0E8FF; /* Soft Light Blue - Elevated backgrounds */
-    --text: #3A4A5A; /* Muted Dark Slate Blue - Text color */
-    --muted: #7B9CB5; /* Muted Steel Blue - Secondary text */
-    --primary: #7B9CB5; /* Muted Steel Blue - Primary color */
-    --primary-600: #587C9B; /* Slightly darker blue for hover states */
-    --border: #A2C3DA; /* Gentle Blue Gray - Borders */
-    --card: #CFE9FF; /* Soft Powder Blue - Card backgrounds */
-    --accent: #A2D2FF; /* Light Azure Blue - Accent highlights */
+    /* Palette */
+    --primary: #A7C7E7; /* Baby Blue */
+    --primary-600: #8FB6DD; /* slightly darker */
+    --secondary: #FCE38A; /* Warm light yellow */
+    --accent: #FFAAA7; /* Light pink */
+    --bg: #F9FBFD; /* Very light bluish white */
+    --bg-elev: #FFFFFF; /* elevated surfaces */
+    --text: #2F3E46; /* Deep grayish blue */
+    --muted: #5B6A72; /* secondary text */
+    --border: #D9E3EC; /* soft border */
+    --card: #FFFFFF; /* cards */
+    --success: #9BE3DE; /* Soft turquoise */
+    --warning: #FFD166; /* Bright yellow */
+    --error: #F4978E; /* Pinkish red */
 }
 
 
@@ -52,7 +57,7 @@ body {
     top: 0;
     z-index: 50;
     backdrop-filter: saturate(1.2) blur(6px);
-    background: rgba(200, 230, 201, 0.8); /* Soft mint green with transparency */
+    background: rgba(255, 255, 255, 0.8);
     border-bottom: 1px solid var(--border);
 }
 .header-inner {
@@ -157,14 +162,14 @@ body {
 /* Vision test */
 .vt-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: grid; gap: 12px; }
 .vt-status { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--muted); }
-.distance-ok { color: #ffffff; }
-.distance-bad { color: #ff6666; }
+.distance-ok { color: var(--success); }
+.distance-bad { color: var(--error); }
 .badge { padding: 4px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--border); }
-.badge.ready { background: #1fcf80; color: #0b1020; border-color: transparent; }
-.badge.adjust { background: #f0b429; color: #0b1020; border-color: transparent; }
+.badge.ready { background: var(--success); color: #0b1020; border-color: transparent; }
+.badge.adjust { background: var(--warning); color: #0b1020; border-color: transparent; }
 .vt-camera { position: fixed; top: 72px; right: 12px; width: 120px; height: 90px; display: none; z-index: 60; }
 .vt-camera video { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 4px 18px rgba(0,0,0,0.35); }
-.vt-warning { color: #ffcc66; min-height: 1.2em; }
+.vt-warning { color: var(--warning); min-height: 1.2em; }
 .vt-stage { display: grid; gap: 12px; place-items: center; }
 .vt-letter { font-weight: 700; font-size: 96px; line-height: 1; transform-origin: 50% 50%; }
 .vt-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
@@ -250,8 +255,8 @@ body {
 }
 
 .results-table thead {
-    background: var(--muted); /* Muted olive green for headers */
-    color: var(--bg); /* Cream text on olive background */
+    background: var(--primary);
+    color: #0b1225;
 }
 
 .results-table th,
@@ -266,27 +271,16 @@ body {
     font-size: 0.9rem;
 }
 
-.results-table tbody tr:hover {
-    background: rgba(110, 168, 254, 0.05);
-}
+.results-table tbody tr:hover { background: rgba(167, 199, 231, 0.08); }
 
 .results-table .overall-result {
     background: var(--bg);
     font-weight: 600;
 }
 
-.results-table .overall-result td {
-    border-top: 2px solid var(--primary);
-    padding: 16px;
-}
+.results-table .overall-result td { border-top: 2px solid var(--accent); padding: 16px; }
 
-.result-summary {
-    margin-bottom: 15px;
-    padding: 15px;
-    background: var(--bg-elev);
-    border-radius: 6px;
-    border-left: 4px solid var(--primary);
-}
+.result-summary { margin-bottom: 15px; padding: 15px; background: var(--bg-elev); border-radius: 6px; border-left: 4px solid var(--accent); }
 
 /* Dual Symbols Layout */
 .dual-symbols {
