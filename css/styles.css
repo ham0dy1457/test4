@@ -6,11 +6,11 @@
     --secondary: #FCE38A; /* Warm light yellow */
     --accent: #FFAAA7; /* Light pink */
     --bg: #F9FBFD; /* Very light bluish white */
-    --bg-elev: #FFFFFF; /* elevated surfaces */
+    --bg-elev: #EEF4FA; /* elevated surfaces with subtle tint */
     --text: #2F3E46; /* Deep grayish blue */
     --muted: #5B6A72; /* secondary text */
-    --border: #D9E3EC; /* soft border */
-    --card: #FFFFFF; /* cards */
+    --border: #C8D7E5; /* soft border a bit darker for contrast */
+    --card: #EFF5FB; /* cards slightly tinted */
     --success: #9BE3DE; /* Soft turquoise */
     --warning: #FFD166; /* Bright yellow */
     --error: #F4978E; /* Pinkish red */
@@ -57,7 +57,7 @@ body {
     top: 0;
     z-index: 50;
     backdrop-filter: saturate(1.2) blur(6px);
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(167, 199, 231, 0.85); /* primary tint */
     border-bottom: 1px solid var(--border);
 }
 .header-inner {
@@ -174,7 +174,7 @@ body {
 .vt-letter { font-weight: 700; font-size: 96px; line-height: 1; transform-origin: 50% 50%; }
 .vt-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
 .vt-actions { display: flex; gap: 8px; }
-.vt-result { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.vt-result { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
 
 .grid {
     display: grid;
