@@ -145,20 +145,13 @@
     }
 
     async function enableCamera() {
-        // Skip camera requirement - allow test to work without HTTPS
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-            warningEl.textContent = 'Camera not available, but you can still take the test.';
-            // Enable test without camera
-            setReadyState(true);
-            return;
-        }
         try {
             // Try to query permission state first (best-effort)
             if (navigator.permissions && navigator.permissions.query) {
                 try {
                     const status = await navigator.permissions.query({ name: 'camera' });
                     if (status.state === 'denied') {
-                        warningEl.textContent = 'Camera permission denied. Enable it in your browser settings.';
+                        warningEl.textContent = 'Camera permission denied. Please allow camera access in your browser settings, then reload.';
                         return;
                     }
                 } catch (_) {}
@@ -190,7 +183,16 @@
             }
             detectionLoop();
         } catch (e) {
-            warningEl.textContent = 'Unable to access camera. Please grant permission in your browser.';
+            // Handle insecure context and permission issues explicitly
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                warningEl.textContent = 'Camera requires HTTPS or localhost. Open this page over HTTPS or run a local server.';
+            } else if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) {
+                warningEl.textContent = 'Camera permission denied. Click "Toggle Camera" and allow access, or enable it in site settings.';
+            } else if (e && (e.name === 'NotFoundError' || e.name === 'OverconstrainedError')) {
+                warningEl.textContent = 'No suitable camera found. Check that a camera is connected and not in use.';
+            } else {
+                warningEl.textContent = 'Unable to access camera. Please grant permission in your browser.';
+            }
         }
     }
 
@@ -293,10 +295,8 @@
         if (streamActive) disableCamera(); else enableCamera();
     });
 
-    // Try to auto-start camera on page load, but allow test without it
+    // Do not auto-start camera; require user gesture for permission prompt
     window.addEventListener('load', () => {
-        enableCamera();
-        // Enable start button even without camera
         if (startBtn) {
             startBtn.disabled = false;
         }
