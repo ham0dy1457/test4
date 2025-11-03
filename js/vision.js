@@ -27,6 +27,11 @@
     let currentEye = 'right'; // 'left', 'right'
     let testResults = { left: null, right: null };
     let smallestCorrectSize = null;
+    // Per-eye measurement aggregates during test
+    const eyeMetrics = {
+        right: { distSum: 0, distCount: 0, attOn: 0, attCount: 0 },
+        left: { distSum: 0, distCount: 0, attOn: 0, attCount: 0 }
+    };
     
     // Symbol sizes in mm (converted to pixels for display)
     // Standard viewing distance: 40cm = 400mm
@@ -268,6 +273,16 @@
                     const distance = estimateDistance(face);
                     updateDistanceStatus(distance);
                     const looking = estimateGazeForward(face);
+                    // Record aggregates for the current eye during active test
+                    if (testActive && (currentEye === 'right' || currentEye === 'left')) {
+                        const bucket = eyeMetrics[currentEye];
+                        if (Number.isFinite(distance)) {
+                            bucket.distSum += distance;
+                            bucket.distCount += 1;
+                        }
+                        bucket.attCount += 1;
+                        if (looking) bucket.attOn += 1;
+                    }
                     if (!looking) {
                         warningEl.textContent = 'Please face the camera for accurate results.';
                         setReadyState(false);
@@ -327,11 +342,17 @@
     function endEyeTest() {
         // Store results for current eye
         const finalSize = smallestCorrectSize !== null ? smallestCorrectSize : sizeStepIndex;
+        // Calculate eye-specific aggregates captured so far
+        const m = eyeMetrics[currentEye];
+        const avgDist = m.distCount > 0 ? (m.distSum / m.distCount) : NaN;
+        const attentionPct = m.attCount > 0 ? (m.attOn / m.attCount) * 100 : NaN;
         testResults[currentEye] = {
             size: finalSize,
             acuity: steps[finalSize].acuity,
             logmar: steps[finalSize].logmar,
-            mm: steps[finalSize].mm
+            mm: steps[finalSize].mm,
+            avgDistance: avgDist,
+            attentionPct
         };
 
         // Switch to next eye or end test
@@ -341,6 +362,8 @@
             correctStreak = 0;
             wrongStreak = 0;
             smallestCorrectSize = null;
+            // reset metrics for the left eye window (ensure fresh aggregation)
+            eyeMetrics.left = { distSum: 0, distCount: 0, attOn: 0, attCount: 0 };
             setSize();
             updateEyeBlur();
             pickDirection();
@@ -407,14 +430,14 @@
         if (timeEl) timeEl.textContent = `Time: ${timeStr}`;
         
         // Calculate additional metrics
-        const rightDistance = 0.4; // Standard test distance
-        const leftDistance = 0.4;
-        const rightLighting = 85 + Math.random() * 10; // Simulated lighting quality
+        const rightDistance = Number.isFinite(rightResult.avgDistance) ? rightResult.avgDistance : 0.4;
+        const leftDistance = Number.isFinite(leftResult.avgDistance) ? leftResult.avgDistance : 0.4;
+        const rightLighting = 85 + Math.random() * 10; // keep simulated for now
         const leftLighting = 83 + Math.random() * 10;
-        const rightContrast = 90 + Math.random() * 5; // Simulated contrast sensitivity
+        const rightContrast = 90 + Math.random() * 5; // keep simulated for now
         const leftContrast = 75 + Math.random() * 10;
-        const rightTracking = 96 + Math.random() * 3; // Simulated eye tracking reliability
-        const leftTracking = 88 + Math.random() * 7;
+        const rightTracking = Number.isFinite(rightResult.attentionPct) ? rightResult.attentionPct : 90;
+        const leftTracking = Number.isFinite(leftResult.attentionPct) ? leftResult.attentionPct : 88;
         
         // Determine overall results
         const rightOverall = rightResult.logmar <= 0.1 ? 'Normal' : 
@@ -423,8 +446,8 @@
                            leftResult.logmar <= 0.3 ? 'Mild Amblyopia' : 'Moderate Amblyopia';
         
         // Populate table cells
-        document.getElementById('right-distance').textContent = rightDistance.toFixed(1);
-        document.getElementById('left-distance').textContent = leftDistance.toFixed(1);
+        document.getElementById('right-distance').textContent = rightDistance.toFixed(2);
+        document.getElementById('left-distance').textContent = leftDistance.toFixed(2);
         document.getElementById('right-lighting').textContent = rightLighting.toFixed(0);
         document.getElementById('left-lighting').textContent = leftLighting.toFixed(0);
         document.getElementById('right-logmar').textContent = rightResult.logmar.toFixed(1);
