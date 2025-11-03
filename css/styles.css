@@ -1,19 +1,19 @@
 /* Base styles - Eye-friendly color scheme */
 :root {
-    /* Palette */
-    --primary: #A7C7E7; /* Baby Blue */
-    --primary-600: #8FB6DD; /* slightly darker */
-    --secondary: #FCE38A; /* Warm light yellow */
-    --accent: #FFAAA7; /* Light pink */
-    --bg: #F9FBFD; /* Very light bluish white */
-    --bg-elev: #EEF4FA; /* elevated surfaces with subtle tint */
-    --text: #2F3E46; /* Deep grayish blue */
-    --muted: #5B6A72; /* secondary text */
-    --border: #C8D7E5; /* soft border a bit darker for contrast */
-    --card: #EFF5FB; /* cards slightly tinted */
-    --success: #9BE3DE; /* Soft turquoise */
-    --warning: #FFD166; /* Bright yellow */
-    --error: #F4978E; /* Pinkish red */
+    /* Blue theme palette */
+    --primary: #4A90E2; /* primary blue */
+    --primary-600: #357ABD; /* hover/darker */
+    --secondary: #7FB3FF; /* soft secondary blue */
+    --accent: #A7C7E7; /* light accent blue */
+    --bg: #F5FAFF; /* page background */
+    --bg-elev: #ECF4FE; /* elevated surface */
+    --text: #243447; /* readable dark */
+    --muted: #5E6E7E; /* secondary text */
+    --border: #D1E3F8; /* soft border */
+    --card: #FFFFFF; /* cards */
+    --success: #62D2A2; /* green success */
+    --warning: #FFD166; /* yellow warning */
+    --error: #F4978E; /* calm error */
 }
 
 
@@ -57,7 +57,7 @@ body {
     top: 0;
     z-index: 50;
     backdrop-filter: saturate(1.2) blur(6px);
-    background: rgba(167, 199, 231, 0.85); /* primary tint */
+    background: rgba(74, 144, 226, 0.85); /* primary tint */
     border-bottom: 1px solid var(--border);
 }
 .header-inner {
@@ -147,12 +147,7 @@ body {
     background: var(--bg-elev);
     text-decoration: none;
 }
-.btn.primary {
-    background: linear-gradient(180deg, var(--primary), var(--primary-600));
-    border-color: transparent;
-    color: #0b1225;
-    font-weight: 600;
-}
+.btn.primary { background: linear-gradient(180deg, var(--primary), var(--primary-600)); border-color: transparent; color: #ffffff; font-weight: 600; }
 
 /* Sections */
 .section { padding: 56px 0; }
@@ -254,10 +249,7 @@ body {
     overflow: hidden;
 }
 
-.results-table thead {
-    background: var(--primary);
-    color: #0b1225;
-}
+.results-table thead { background: var(--primary); color: #ffffff; }
 
 .results-table th,
 .results-table td {
