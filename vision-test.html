@@ -125,12 +125,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/9.0.1/adapter.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@1.0.5/dist/face-landmarks-detection.min.js" crossorigin="anonymous"></script>
+	<!-- Firebase (compat) for simple CDN usage -->
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+	<script>
+		// TODO: Replace with your Firebase project config values
+		window.FIREBASE_CONFIG = {
+			apiKey: "",
+			authDomain: "",
+			projectId: "",
+			storageBucket: "",
+			messagingSenderId: "",
+			appId: ""
+		};
+	</script>
 	<!-- MediaPipe FaceMesh dependencies for improved distance & attention -->
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
     <script src="js/app.js" defer></script>
+	<script src="js/db.js" defer></script>
     <script src="js/vision.js" defer></script>
 	<script>
 		// Enhanced camera distance and eye attention using MediaPipe FaceMesh
@@ -310,3 +325,4 @@
 	</script>
 </body>
 </html>
+
