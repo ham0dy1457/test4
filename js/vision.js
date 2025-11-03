@@ -437,8 +437,19 @@
         document.getElementById('left-overall').textContent = leftOverall;
     }
 
-    startBtn.addEventListener('click', startTest);
-    retryBtn.addEventListener('click', startTest);
+    startBtn.addEventListener('click', async () => {
+        // Attempt to trigger permission prompt from a user gesture
+        if (!streamActive && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            try { await enableCamera(); } catch (_) {}
+        }
+        startTest();
+    });
+    retryBtn.addEventListener('click', async () => {
+        if (!streamActive && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            try { await enableCamera(); } catch (_) {}
+        }
+        startTest();
+    });
 
     document.querySelectorAll('.vt-controls .btn').forEach(btn => {
         btn.addEventListener('click', () => {
