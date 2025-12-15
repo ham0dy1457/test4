@@ -1347,6 +1347,31 @@ function showGiftScreen() {
             level2Btn.disabled = false;
             openLevel(1);
         }else{
+            // All levels finished: compute full session results and send to Lazy-eye Firebase
+            try {
+                const gamesSummary = [];
+                for (let lvl = 0; lvl < levels.length; lvl++) {
+                    const lvlScoresArr = levelScores[lvl] || [];
+                    for (let gi = 0; gi < levels[lvl].games.length; gi++) {
+                        const gameDef = levels[lvl].games[gi];
+                        const score = typeof lvlScoresArr[gi] === 'number' ? lvlScoresArr[gi] : 0;
+                        gamesSummary.push({
+                            level: lvl + 1,
+                            gameIndex: gi,
+                            gameName: gameDef.name,
+                            score
+                        });
+                    }
+                }
+                const sessionTotal = gamesSummary.reduce((sum, g) => sum + g.score, 0);
+                const payload = {
+                    when: new Date().toISOString(),
+                    sessionTotal,
+                    games: gamesSummary
+                };
+                window.LazyDB?.saveLazySessionResult(payload);
+            } catch (_) {}
+
             show(finalScreen);
             finalScore.innerHTML = `<b>Total Score: ${levelScores.flat().reduce((a,b)=>a+b,0)}</b>`;
         }
