@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'opt-lazy-eye': () => { window.location.href = 'lazytest/index.html'; },
         'opt-vision-test': () => { window.location.href = 'vision-test.html'; },
         'opt-guidelines': () => { window.location.href = 'guidelines.html'; },
-        'opt-report': () => alert('Report selected')
+        'opt-report': () => { window.location.href = 'report.html'; }
     };
     Object.keys(routes).forEach((id) => {
         const el = document.getElementById(id);
