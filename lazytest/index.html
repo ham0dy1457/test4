@@ -75,6 +75,21 @@
 </div>
 
 <audio id="btn-hover-sound" src="click-21156.mp3" preload="auto"></audio>
-</body>
+
+<!-- Lazy-eye Firebase project (separate from vision test) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+    window.LAZY_FIREBASE_CONFIG = {
+        apiKey: "AIzaSyBZtcD0LFwFblHmjZ_kp4XaE-S6PZEepKg",
+        authDomain: "lazy-eye-4e3d0.firebaseapp.com",
+        projectId: "lazy-eye-4e3d0",
+        storageBucket: "lazy-eye-4e3d0.firebasestorage.app",
+        messagingSenderId: "123529416962",
+        appId: "1:123529416962:web:0f38d7621415ee1cbb321b"
+    };
+</script>
+<script src="../js/lazy-db.js"></script>
 <script src="script.js"></script>
+</body>
 </html>
