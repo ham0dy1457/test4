@@ -39,8 +39,35 @@
 		}
 	}
 
+	async function getLatestVisionResult() {
+		// Try Firestore first
+		try {
+			if (db) {
+				const col = db.collection('visionTests');
+				const snap = await col.orderBy('when', 'desc').limit(1).get();
+				if (!snap.empty) {
+					const doc = snap.docs[0];
+					return { id: doc.id, ...doc.data() };
+				}
+			}
+		} catch (e) {
+			console.warn('Reading from Firestore failed, falling back to local:', e);
+		}
+
+		// Fallback to local storage history
+		try {
+			const history = JSON.parse(localStorage.getItem('visionHistory') || '[]');
+			if (Array.isArray(history) && history.length > 0) {
+				return history[history.length - 1];
+			}
+		} catch (e) {
+			console.warn('Reading local visionHistory failed:', e);
+		}
+		return null;
+	}
+
 	// Expose minimal API
-	window.VisionDB = { initFirebase, saveVisionResult };
+	window.VisionDB = { initFirebase, saveVisionResult, getLatestVisionResult };
 
 	// Initialize on load
 	window.addEventListener('load', initFirebase);
